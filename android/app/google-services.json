@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1050158266649",
+    "project_id": "swipez-billing",
+    "storage_bucket": "swipez-billing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050158266649:android:212fff710594f8f9006d88",
+        "android_client_info": {
+          "package_name": "com.swipez.billing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050158266649-7er8105de4lapqie18eva9nn1gf4fh5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEOU2GiheUzJG6zrhoIYeBf9doRu5w0tQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050158266649-7er8105de4lapqie18eva9nn1gf4fh5u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1050158266649-j94mrfnffincdpdom8h6237fom6bi2hg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.swipez.billing"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
