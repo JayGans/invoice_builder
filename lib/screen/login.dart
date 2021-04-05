@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:invoice_builder/screen/user_registration.dart';
 import 'package:invoice_builder/screen/user_registration_1.dart';
+
+import 'bottom_navigation.dart';
 
 class Login extends  StatefulWidget {
   @override
@@ -16,20 +19,32 @@ class _LoginPageState extends State<Login> {
   String _password;
   TextEditingController name;
   GlobalKey<FormState> _key = new GlobalKey();
+  TextEditingController _pnoIdController = TextEditingController();
+  TextEditingController _passIdController = TextEditingController();
   bool _validate = false;
+  bool _autoValidate= false;
+
   var countryDropDown;
   @override
   void initState() {
+
     // TODO: implement initState
     super.initState();
     name = TextEditingController();
+
+  }
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
 
      countryDropDown = Container(
       decoration: new BoxDecoration(
-        color: Colors.white,
+
         border: Border(
           right: BorderSide(width: 0.5, color: Colors.grey),
         ),
@@ -119,7 +134,7 @@ class _LoginPageState extends State<Login> {
 
           child: Text('Sign in', style: TextStyle(
             fontSize: 20,
-            color: Colors.black,
+          //  color: Colors.black,
             fontWeight: FontWeight.bold, fontFamily: 'Rubik',)
 
           ),
@@ -143,46 +158,61 @@ class _LoginPageState extends State<Login> {
 
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
+   TextFormField(
 
-
-              TextFormField(
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Enter register phone number';
                   }
                 },
+      autovalidate: _autoValidate,
+      controller: _pnoIdController,
                 keyboardType: TextInputType.number,
                 decoration: new InputDecoration(
                     contentPadding: const EdgeInsets.all(12.0),
-                    border: new OutlineInputBorder(
-                        borderSide:
-                        new BorderSide(color: const Color(0xFFE0E0E0), width: 0.1)),
-                    fillColor: Colors.white,
-                    prefixIcon: countryDropDown,
 
+
+                   // floatingLabelBehavior: FloatingLabelBehavior.always,
+                    errorStyle: TextStyle(
+                        color: Colors.red
+                    ),
+                    border: new OutlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xFFE0E0E0), width: 1)),
+                    /*focusedBorder: new OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green, width: 1),
+                    ),*/
+
+                    fillColor: Colors.white,
+
+                    prefixIcon: countryDropDown,
+                   // suffixStyle: const TextStyle(color: Colors.green),
                     hintText: 'Phone Number',
-                    labelText: 'Phone Number'),
+                    labelText: 'Phone Number'
+                    ),
+
               ),
+
               SizedBox(
                 height: 10,
               ),
               TextFormField(
                 //controller: pass,
-
+                autovalidate: _autoValidate,
+                controller: _passIdController,
                 decoration: InputDecoration(
                     labelText: "Password",
 
                     labelStyle: TextStyle(
-                        color: Colors.black
+                       // color: Colors.black
                     ),
                     errorStyle: TextStyle(
-                        color: Colors.black
+                      //  color: Colors.red
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)
                     )
                 ),
-                validator: (val) => val.length < 6 ? 'Password too short.' : null,
+                validator: (val) => val.isEmpty ? 'Enter Password.' : null,
                 onSaved: (val) => _password = val,
                 obscureText: _obscureText,
               )
@@ -207,10 +237,7 @@ class _LoginPageState extends State<Login> {
                 ),
                 colorBrightness: Brightness.dark,
                 onPressed: () {
-                /*  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => User_Registration_1()),
-                  ); */// _loginAttempt(context);
+                  onButtonPressed(context);
                 },
                 color: Colors.green,
               ),
@@ -254,5 +281,19 @@ class _LoginPageState extends State<Login> {
         ),
       ]
     );
+  }
+  onButtonPressed(BuildContext context) {
+    setState(() {
+      _autoValidate= true;
+    });
+    if (_key.currentState.validate()) {
+      setState(() {
+        // validDataFilled = !validDataFilled;
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:invoice_builder/screen/user_registration.dart';
 
 import 'login.dart';
@@ -18,9 +19,8 @@ class _DetailPageState extends State<Start_Page> {
   );
   @override
   Widget build(BuildContext context) {
-    var _pageSize = MediaQuery.of(context).size.height;
-    var _notifySize = MediaQuery.of(context).padding.top;
-    var _appBarSize = appBar.preferredSize.height;
+
+
     return Scaffold(
      /* appBar: AppBar(
         title: Text('Invoice Details'),
@@ -64,7 +64,7 @@ class _DetailPageState extends State<Start_Page> {
 
                           child: Text('Welcome to', style: TextStyle(
                             fontSize: 32,
-color: Colors.black,
+
                             fontWeight: FontWeight.bold, fontFamily: 'Rubik',)
 
                           ),

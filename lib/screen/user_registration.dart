@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:invoice_builder/screen/user_registration_1.dart';
+import 'package:invoice_builder/utils/validator.dart';
 
 class User_Registration extends  StatefulWidget {
   @override
@@ -14,9 +16,14 @@ class _RegistrationPageState extends State<User_Registration> {
   List<String> _countryCodes = ['IN', 'US','EU'];
   String _password;
   TextEditingController name;
-  GlobalKey<FormState> _key = new GlobalKey();
+  GlobalKey<FormState> _userregFormKey = new GlobalKey();
+  TextEditingController _cmpIdController = TextEditingController();
+  TextEditingController _fnmIdController = TextEditingController();
+  TextEditingController _pnoIdController = TextEditingController();
+  TextEditingController _passIdController = TextEditingController();
   bool _validate = false;
   var countryDropDown;
+  bool _autoValidate= false;
   @override
   void initState() {
     // TODO: implement initState
@@ -28,7 +35,7 @@ class _RegistrationPageState extends State<User_Registration> {
 
      countryDropDown = Container(
       decoration: new BoxDecoration(
-        color: Colors.white,
+       // color: Colors.white,
         border: Border(
           right: BorderSide(width: 0.5, color: Colors.grey),
         ),
@@ -62,7 +69,7 @@ class _RegistrationPageState extends State<User_Registration> {
 
 
     return Scaffold(
-      /*appBar: AppBar(
+     /* appBar: AppBar(
         title: Text('Sign up'),
       ),*/
 
@@ -73,7 +80,7 @@ class _RegistrationPageState extends State<User_Registration> {
 
         child: Center(
           child: new Form(
-            key: _key,
+              key: _userregFormKey,
             autovalidate: _validate,
             child: _getFormUI(),
           ),
@@ -118,7 +125,7 @@ class _RegistrationPageState extends State<User_Registration> {
 
           child: Text('Tell us about your business', style: TextStyle(
             fontSize: 20,
-            color: Colors.black,
+           color: Colors.lightBlueAccent,
             fontWeight: FontWeight.bold, fontFamily: 'Rubik',)
 
           ),
@@ -131,6 +138,7 @@ class _RegistrationPageState extends State<User_Registration> {
 
           child: Text('Setup your company information and account', style: TextStyle(
             fontSize: 14,
+
             fontFamily: 'Rubik',)
 
           ),
@@ -143,41 +151,46 @@ class _RegistrationPageState extends State<User_Registration> {
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
               TextFormField(
-               // controller: name,
+                key: Key('cmpnm'),
+                textCapitalization: TextCapitalization.words,
+                autovalidate: _autoValidate,
+                controller: _cmpIdController,
                 keyboardType: TextInputType.text,
+                validator: (value) =>
+                    Validator.validateEmptyName(value),
                 decoration: InputDecoration(
                     labelText: "Company Name",
                     hintText: 'Super Company Pvt Ltd',
+
                     labelStyle: TextStyle(
-                        color: Colors.black
+                      //  color: Colors.black
                     ),
                     errorStyle: TextStyle(
-                        color: Colors.black
+                        color: Colors.red
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)
                     )
                 ),
-                validator: (value){
-                  if(value == null || value == ''){
-                    return "Enter Company name";
-                  }
-                },
+
               ),
               SizedBox(
                 height: 10,
               ),
               TextFormField(
-               // controller: name,
+                key: Key('vendor_nm'),
+                textCapitalization: TextCapitalization.words,
+                autovalidate: _autoValidate,
+                controller: _fnmIdController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     labelText: "Full Name",
                     hintText: 'Rohit Jadhav',
                     labelStyle: TextStyle(
-                        color: Colors.black
+                       // color: Colors.black
                     ),
                     errorStyle: TextStyle(
-                        color: Colors.black
+                        color: Colors.red
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)
@@ -193,14 +206,17 @@ class _RegistrationPageState extends State<User_Registration> {
                 height: 10,
               ),
               TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                },
+                key: Key('vendor_phone'),
+                autovalidate: _autoValidate,
+                controller: _pnoIdController,
+                validator: (value) =>
+                    Validator.validateEmptyPhone(value.trim()),
                 keyboardType: TextInputType.number,
                 decoration: new InputDecoration(
                     contentPadding: const EdgeInsets.all(12.0),
+                    errorStyle: TextStyle(
+                        color: Colors.red
+                    ),
                     border: new OutlineInputBorder(
                         borderSide:
                         new BorderSide(color: const Color(0xFFE0E0E0), width: 0.1)),
@@ -215,21 +231,24 @@ class _RegistrationPageState extends State<User_Registration> {
               ),
               TextFormField(
                 //controller: pass,
-
+                key: Key('vendor_pass'),
+                autovalidate: _autoValidate,
+                controller: _passIdController,
                 decoration: InputDecoration(
                     labelText: "Password",
 
                     labelStyle: TextStyle(
-                        color: Colors.black
+                       // color: Colors.black
                     ),
                     errorStyle: TextStyle(
-                        color: Colors.black
+                        color: Colors.red
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)
                     )
                 ),
-                validator: (val) => val.length < 6 ? 'Password too short.' : null,
+                validator: (value) =>
+                    Validator.validatePassword(value.trim()),
                 onSaved: (val) => _password = val,
                 obscureText: _obscureText,
               )
@@ -254,10 +273,8 @@ class _RegistrationPageState extends State<User_Registration> {
                 ),
                 colorBrightness: Brightness.dark,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => User_Registration_1()),
-                  ); // _loginAttempt(context);
+                  onButtonPressed(context);
+                  // _loginAttempt(context);
                 },
                 color: Colors.green,
               ),
@@ -270,5 +287,19 @@ class _RegistrationPageState extends State<User_Registration> {
         ),
       ]
     );
+  }
+  onButtonPressed(BuildContext context) {
+    setState(() {
+      _autoValidate= true;
+    });
+    if (_userregFormKey.currentState.validate()) {
+      setState(() {
+       // validDataFilled = !validDataFilled;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => User_Registration_1()),
+        );
+      });
+    }
   }
 }

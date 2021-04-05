@@ -56,7 +56,7 @@ class _RegistrationPageState extends State<User_Registration_1> {
               children: <Widget>[
                 Text('Welcome Sarang', style: TextStyle(
                   fontSize: 24,
-                  color: Colors.green,
+                  color: Colors.lightBlueAccent,
                   fontWeight: FontWeight.bold, fontFamily: 'Rubik',),
                    ),
                 SizedBox(
