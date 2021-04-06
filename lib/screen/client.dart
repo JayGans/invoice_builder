@@ -8,7 +8,7 @@ class Client extends StatefulWidget {
 }
   class _MainWidgetState extends State<Client> {
     final ContactPicker _contactPicker = new ContactPicker();
-    Contact _contact;
+    Contact _contact; 
 
   @override
   Widget build(BuildContext context) =>
